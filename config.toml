@@ -1,0 +1,113 @@
+baseURL = "https://raycaparros.com"
+languageCode = "en-us"
+title = "Ray Caparros"
+theme = "careercanvas"
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
+
+[languages]
+  [languages.en]
+    contentDir = "content/en"
+    languageName = "English"
+    weight = 1
+    [languages.en.params]
+      tagline = "Security Architect & Engineer bridging offensive and defensive cybersecurity — from SOC operations and zero-trust architecture to red teaming and AI-driven security automation."
+      hero_description = "I'm a Security Architect and Engineer with deep experience across both defensive and offensive disciplines — from next-gen firewalls, SIEM, and zero-trust architecture to penetration testing and adversary emulation. I also bring AI and machine learning into cybersecurity practice, applying it to threat detection, behavioral analytics, and workflow automation. Alongside my engineering work, I teach as an adjunct professor, helping the next generation of security professionals build real-world skills in network security, digital forensics, and ethical hacking."
+      hero_location = "Ashburn, VA"
+      resume_url = "/files/Ray_Caparros_Resume.pdf"
+      collab_tags = [
+        "Security Architecture & Engineering",
+        "Offensive & Defensive Cybersecurity",
+        "AI-Driven Security Automation",
+        "SOC & Incident Response",
+        "Cybersecurity Mentorship & Teaching"
+      ]
+
+[build]
+  writeStats = true
+
+[params]
+  name = "Ray Caparros"
+  firstName = "Ray"
+  lastName = "Caparros"
+  email = "ray.caparros@netsectap.com"
+  profile_image = "/images/ray-caparros-profile.jpg"
+  author = "Ray Caparros"
+  og_image = "images/ray-caparros-og.png"
+  description = "Security Architect and Engineer specializing in offensive and defensive cybersecurity, zero-trust architecture, and AI-driven security automation."
+  linkedin_url = "https://www.linkedin.com/in/raycaparros"
+  linkedin_text = "linkedin.com/in/raycaparros"
+  github_url = "https://github.com/arcy24"
+  github_text = "github.com/arcy24"
+  calendly_url = "https://calendly.com/netsec-rcaparros"
+  calendly_height = "700px"
+  copyright = "Ray Caparros"
+  resume_url_en = "/files/Ray_Caparros_Resume.pdf"
+  resume_label = "View CV"
+  formspreeendpoint = ""
+  pexelsapikey = ""
+  sectionPagesMenu = "main"
+
+  [[params.social]]
+    icon = "linkedin-in"
+    url = "https://www.linkedin.com/in/raycaparros"
+  [[params.social]]
+    icon = "github"
+    url = "https://github.com/arcy24"
+
+[taxonomies]
+  tag = "tags"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    style = "monokai"
+
+[server]
+  [[server.headers]]
+    for = "/**/*.css"
+    [server.headers.values]
+      Content-Type = "text/css"
+
+[params.color_palettes]
+  [[params.color_palettes.palette]]
+    name = "professional"
+    main_color = "#474A51"
+    second_color = "#E52521"
+    third_color = "#3CB043"
+  [[params.color_palettes.palette]]
+    name = "ocean"
+    main_color = "#1E40AF"
+    second_color = "#06B6D4"
+    third_color = "#10B981"
+  [[params.color_palettes.palette]]
+    name = "steel"
+    main_color = "#374151"
+    second_color = "#6B7280"
+    third_color = "#10B981"
+  [[params.color_palettes.palette]]
+    name = "navy"
+    main_color = "#1E3A8A"
+    second_color = "#3B82F6"
+    third_color = "#F59E0B"
+  [[params.color_palettes.palette]]
+    name = "slate"
+    main_color = "#475569"
+    second_color = "#0EA5E9"
+    third_color = "#F97316"
+  [[params.color_palettes.palette]]
+    name = "midnight"
+    main_color = "#0F172A"
+    second_color = "#8B5CF6"
+    third_color = "#06B6D4"
+
+[params.pexels]
+  queries = ["network security", "server room", "cybersecurity", "data center", "digital technology"]
+
+[security]
+  [security.exec]
+    allow = ['^(dart-)?sass(-embedded)?$', '^go$', '^npx$', '^postcss$', '^node$']
+  [security.node.permissions]
+    disable = true
