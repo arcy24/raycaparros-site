@@ -11,8 +11,8 @@ defaultContentLanguageInSubdir = false
     languageName = "English"
     weight = 1
     [languages.en.params]
-      tagline = "Security Architect & Engineer bridging offensive and defensive cybersecurity — from SOC operations and zero-trust architecture to red teaming and AI-driven security automation."
-      hero_description = "I'm a Security Architect and Engineer with deep experience across both defensive and offensive disciplines — from next-gen firewalls, SIEM, and zero-trust architecture to penetration testing and adversary emulation. I also bring AI and machine learning into cybersecurity practice, applying it to threat detection, behavioral analytics, and workflow automation. Alongside my engineering work, I teach as an adjunct professor, helping the next generation of security professionals build real-world skills in network security, digital forensics, and ethical hacking."
+      tagline = "Security Architect & Engineer shaping the next generation of cybersecurity talent — through hands-on engineering, teaching, and career mentorship."
+      hero_description = "I'm a Security Architect and Engineer with deep experience across both defensive and offensive disciplines — from next-gen firewalls, SIEM, and zero-trust architecture to penetration testing and adversary emulation. But just as much as building and defending systems, I'm passionate about building people: as an adjunct professor and cybersecurity career coach, I've spent years mentoring career-changers, veterans, and entry-level analysts — helping them turn technical curiosity into real, employable skill. I also bring AI and machine learning into security practice, applying it to threat detection, behavioral analytics, and workflow automation."
       hero_location = "Ashburn, VA"
       resume_url = "/files/Ray_Caparros_Resume.pdf"
       collab_tags = [
