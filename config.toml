@@ -44,7 +44,7 @@ defaultContentLanguageInSubdir = false
   copyright = "Ray Caparros"
   resume_url_en = "/files/Ray_Caparros_Resume.pdf"
   resume_label = "View CV"
-  formspreeendpoint = ""
+  formspreeendpoint = "https://formspree.io/f/xqpzzpyq"
   pexelsapikey = ""
   sectionPagesMenu = "main"
 

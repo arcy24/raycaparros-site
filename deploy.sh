@@ -6,7 +6,7 @@ export PATH="$PWD/node_modules/.bin:$PATH"
 npm run build:css
 
 echo "==> Building site (Hugo)..."
-hugo --minify
+hugo --minify --config config.toml,config.local.toml
 
 echo "==> Syncing to live web root..."
 sudo rsync -a --delete /root/raycaparros-site/public/ /var/www/raycaparros.com/raycaparros-site/public/
