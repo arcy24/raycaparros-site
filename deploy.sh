@@ -15,3 +15,23 @@ echo "==> Fixing permissions..."
 sudo chown -R nginx:nginx /var/www/raycaparros.com
 
 echo "==> Done! Live at https://raycaparros.com"
+echo ""
+
+# --- Git reminder/prompt ---
+if [ -n "$(git status --porcelain)" ]; then
+  echo "==> You have uncommitted changes:"
+  git status --short
+  echo ""
+  read -p "Commit and push these changes to GitHub now? (y/n): " confirm
+  if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
+    read -p "Enter a commit message: " commit_msg
+    git add .
+    git commit -m "$commit_msg"
+    git push
+    echo "==> Pushed to GitHub."
+  else
+    echo "==> Skipped. Remember to commit later!"
+  fi
+else
+  echo "==> No uncommitted changes. GitHub is already up to date."
+fi
