@@ -243,7 +243,7 @@ Open the new domain in a browser — you should see the placeholder page with a 
 ```
 
 
-## Built With AI-Assisted Development
+### Built With AI-Assisted Development
 
 This project was built end-to-end through an AI-assisted workflow using OpenWebUI and a conversational AI assistant — from initial concept through infrastructure setup, content generation, and debugging.
 
