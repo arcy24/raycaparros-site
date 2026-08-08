@@ -112,6 +112,137 @@ Infrastructure:
 
 ---
 
+## Multi-Site Server Hosting
+
+This server doesn't just host raycaparros.com — it's also configured to serve a **second, completely independent website** (charisserosecaparros.com) using Nginx **virtual hosting**. If you're following this repo as a learning reference, this section documents exactly how that was set up, since it's a common next step once your first site is live: adding a second site to the same server instead of paying for a whole new one.
+
+### The Concept: Virtual Hosting
+
+Nginx can serve multiple websites from a single server by reading the `server_name` directive in each config file and matching it against the `Host` header of incoming requests. Each site gets:
+- its own DNS records (in its own Cloudflare zone)
+- its own SSL certificate
+- its own Nginx config file
+- its own document root (web folder)
+
+The underlying server, IP address, and Nginx installation are all shared.
+
+### Step 1: Server-Level Prerequisites
+
+These only need to be done once per server, regardless of how many sites you add later.
+
+```bash
+# Confirm OS
+cat /etc/os-release
+
+# Install Git
+sudo dnf install -y git
+git --version
+
+# Install Nginx
+sudo dnf install -y nginx
+sudo systemctl enable --now nginx
+
+# Open the firewall for web traffic (ports 80/443)
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-service=https
+sudo firewall-cmd --reload
+sudo firewall-cmd --list-services   # confirms http/https are now allowed
+
+# Install Node.js 22 (REQUIRED — v20 fails on Hugo's PostCSS build step)
+sudo dnf module install -y nodejs:22
+node --version
+
+# Confirm the server's public IP — you'll need this for DNS records
+curl -4 ifconfig.me
+
+### Step 2: DNS (per new domain, in Cloudflare
+
+For each additional domain you want to host on this server:
+
+1. Add the domain to Cloudflare as its own separate zone (Add a Site) — Cloudflare treats every domain independently for DNS, SSL, and security, even when multiple domains point to the same server IP.
+2. In that zone's DNS settings, add two A records, both proxied (orange cloud):
+   - @ (root) → your server's public IP
+   - www → same IP
+
+### Step 3: Web Root + Placeholder Page
+Give the new site its own folder to serve from, separate from raycaparros.com's:
+
+```
+sudo mkdir -p /var/www/charisserosecaparros.com/public
+echo "<h1>charisserosecaparros.com — Coming Soon</h1>" | sudo tee /var/www/charisserosecaparros.com/public/index.html
+sudo chown -R nginx:nginx /var/www/charisserosecaparros.com
+
+```
+
+### Step 4: SSL via Cloudflare Origin CA
+Since this domain is fully proxied through Cloudflare, we use a Cloudflare Origin CA certificate instead of Certbot/Let's Encrypt — it lasts up to 15 years with no renewal cron job needed, as long as traffic stays proxied.
+
+1. In the Cloudflare dashboard, go to the new domain's zone → SSL/TLS → Origin Server → Create Certificate (RSA 2048, 15-year validity).
+2. Save the cert and key on the server:
+
+```
+sudo mkdir -p /etc/nginx/ssl
+
+sudo tee /etc/nginx/ssl/charisserosecaparros.pem > /dev/null << 'EOF'
+[paste certificate here]
+EOF
+
+sudo tee /etc/nginx/ssl/charisserosecaparros.key > /dev/null << 'EOF'
+[paste private key here]
+EOF
+
+sudo chmod 600 /etc/nginx/ssl/charisserosecaparros.key
+
+```
+
+### Step 5: Nginx Virtual Host Config
+This is the piece that actually tells Nginx "when someone requests charisserosecaparros.com, serve THIS folder" — separate from and without touching raycaparros.com's existing config.
+
+```
+sudo tee /etc/nginx/conf.d/charisserosecaparros.conf > /dev/null << 'EOF'
+server {
+    listen 80;
+    server_name charisserosecaparros.com www.charisserosecaparros.com;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name charisserosecaparros.com www.charisserosecaparros.com;
+    root /var/www/charisserosecaparros.com/public;
+    index index.html;
+
+    ssl_certificate     /etc/nginx/ssl/charisserosecaparros.pem;
+    ssl_certificate_key /etc/nginx/ssl/charisserosecaparros.key;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+EOF
+
+sudo nginx -t
+sudo systemctl reload nginx
+
+```
+
+raycaparros.com's own config file (/etc/nginx/conf.d/raycaparros.conf) sits right alongside this one, completely untouched. 
+
+### Step 6: Set Cloudflare SSL Mode
+Back in the Cloudflare dashboard, for the new domain's zone: SSL/TLS → set mode to Full (Strict), now that a real certificate is installed on the origin server.
+
+## Verify
+Open the new domain in a browser — you should see the placeholder page with a valid padlock/HTTPS icon. That confirms the full domain → DNS → server → Nginx → SSL chain is working for the new site, independent of raycaparros.com.
+
+```
+| Site | Config File | Web Root | Cert |
+|---|---|---|---|
+| raycaparros.com | `/etc/nginx/conf.d/raycaparros.conf` | `/var/www/raycaparros.com/public` | `raycaparros.pem/.key` |
+| charisserosecaparros.com | `/etc/nginx/conf.d/charisserosecaparros.conf` | `/var/www/charisserosecaparros.com/public` | `charisserosecaparros.pem/.key` |
+
+```
+
+
 ## Built With AI-Assisted Development
 
 This project was built end-to-end through an AI-assisted workflow using OpenWebUI and a conversational AI assistant — from initial concept through infrastructure setup, content generation, and debugging.
