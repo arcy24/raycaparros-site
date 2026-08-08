@@ -153,7 +153,8 @@ sudo dnf module install -y nodejs:22
 node --version
 
 # Confirm the server's public IP — you'll need this for DNS records
-curl -4 ifconfig.me
+icurl -4 ifconfig.me
+```
 
 ### Step 2: DNS (per new domain, in Cloudflare
 
