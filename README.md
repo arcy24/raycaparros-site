@@ -235,14 +235,10 @@ Back in the Cloudflare dashboard, for the new domain's zone: SSL/TLS → set mod
 ## Verify
 Open the new domain in a browser — you should see the placeholder page with a valid padlock/HTTPS icon. That confirms the full domain → DNS → server → Nginx → SSL chain is working for the new site, independent of raycaparros.com.
 
-```
 | Site | Config File | Web Root | Cert |
 |---|---|---|---|
 | raycaparros.com | `/etc/nginx/conf.d/raycaparros.conf` | `/var/www/raycaparros.com/public` | `raycaparros.pem/.key` |
 | charisserosecaparros.com | `/etc/nginx/conf.d/charisserosecaparros.conf` | `/var/www/charisserosecaparros.com/public` | `charisserosecaparros.pem/.key` |
-
-```
-
 
 ### Built With AI-Assisted Development
 
